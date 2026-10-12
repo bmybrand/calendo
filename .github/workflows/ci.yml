@@ -21,7 +21,10 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm ci
+        # Pin npm 10 so lockfile matches Actions (npm 11 can omit optional entries)
+        run: |
+          npm install -g npm@10.9.2
+          npm ci
 
       - name: Generate Prisma client
         run: npx prisma generate
