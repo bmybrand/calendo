@@ -1,7 +1,5 @@
 import type { MetadataRoute } from "next";
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
-
 /** Public routes included in sitemap and SEO audits */
 export const PUBLIC_SITE_ROUTES = ["/login"] as const;
 
@@ -15,8 +13,11 @@ export const APP_SITE_ROUTES = [
   "/analytics",
 ] as const;
 
+/** Normalize host-only values like `calendo-phi.vercel.app` → `https://…` */
 export function getSiteBaseUrl(): string {
-  return baseUrl.replace(/\/$/, "");
+  const raw = (process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000").trim();
+  const withProtocol = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
+  return withProtocol.replace(/\/$/, "");
 }
 
 export function absoluteUrl(path: string): string {

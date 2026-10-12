@@ -29,10 +29,10 @@ export async function POST(req: Request) {
       },
     });
 
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+    const { getSiteBaseUrl } = await import("@/lib/site-routes");
     return jsonResponse({
       token: share.token,
-      url: `${baseUrl}/share/${share.token}`,
+      url: `${getSiteBaseUrl()}/share/${share.token}`,
       expiresAt: share.expiresAt.toISOString(),
     });
   } catch (e) {
