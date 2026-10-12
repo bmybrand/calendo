@@ -1,22 +1,23 @@
 import Groq from "groq-sdk";
 
-const groq = new Groq({
-  apiKey: process.env.GROQ_API_KEY,
-});
-
 /** Groq retired llama-3.3-70b-versatile (Aug 2026). Override with GROQ_MODEL if needed. */
 const DEFAULT_GROQ_MODEL = "openai/gpt-oss-120b";
+
+function getGroqClient(): Groq {
+  const apiKey = process.env.GROQ_API_KEY;
+  if (!apiKey) {
+    throw new Error("GROQ_API_KEY is not configured");
+  }
+  return new Groq({ apiKey });
+}
 
 export async function groqChat(
   systemPrompt: string,
   userMessage: string,
   maxTokens = 4096
 ): Promise<string> {
-  if (!process.env.GROQ_API_KEY) {
-    throw new Error("GROQ_API_KEY is not configured");
-  }
-
   const model = process.env.GROQ_MODEL?.trim() || DEFAULT_GROQ_MODEL;
+  const groq = getGroqClient();
 
   try {
     const response = await groq.chat.completions.create({
