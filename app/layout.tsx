@@ -6,15 +6,17 @@ import { Providers } from "@/components/providers";
 import { Ga4Script } from "@/components/analytics/ga4-script";
 import { getSiteBaseUrl } from "@/lib/site-routes";
 
+// Syne is a variable font — omit weight arrays (they break next/font in CI)
 const syne = Syne({
   subsets: ["latin"],
   variable: "--font-heading",
-  weight: ["600", "700", "800"],
+  display: "swap",
 });
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
   variable: "--font-sans",
+  display: "swap",
 });
 
 const siteUrl = getSiteBaseUrl();
